@@ -1,65 +1,69 @@
 import { expect, describe, it, beforeEach } from "vitest";
-import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import { UserAlreadyExistsError } from "../errors/users-already-exists-error";
-import { UpdateUserServices } from "./update";
+import { UpdateConsultantServices } from "./update";
+import { InMemoryConsultantsRepository } from "@/repositories/in-memory/in-memory-consultants-repository";
 
-let usersRepository: InMemoryUsersRepository;
-let sut: UpdateUserServices;
+let consultantsRepository: InMemoryConsultantsRepository;
+let sut: UpdateConsultantServices;
 
-describe("Update User Service", () => {
+describe("Update consultant Service", () => {
   beforeEach(() => {
-    usersRepository = new InMemoryUsersRepository();
-    sut = new UpdateUserServices(usersRepository);
+    consultantsRepository = new InMemoryConsultantsRepository();
+    sut = new UpdateConsultantServices(consultantsRepository);
   });
 
-  it("should be able to updated", async () => {
-    await usersRepository.create({
-      id: "user-01",
+  it("should be able to updated consultant", async () => {
+    await consultantsRepository.create({
+      id: "consultant-01",
       email: "jonhdoe@example.com",
       name: "Jonh Doe",
       phone: "+55 85 9 99999999",
       cpf: "000.000.000-01",
       password_hash: "123456",
-      role: "ADMIN",
+      pix: "85999999999",
+      typeKeyPix: "TELEFONE",
     });
 
-    const { user } = await sut.execute({
-      id: "user-01",
+    const { consultant } = await sut.execute({
+      id: "consultant-01",
       email: "jonhdoe444@example.com",
       name: "Jonh Doe",
       phone: "+55 85 9 99999999",
       cpf: "000.000.000-01",
     });
 
-    expect(user).toEqual(
+    expect(consultant).toEqual(
       expect.objectContaining({ email: "jonhdoe444@example.com" })
     );
   });
 
-  it("should not be able to updated with same email twice", async () => {
+  it("should not be able to updated consultant with same email twice", async () => {
     const email = "jonhdoe@example.com";
 
-    await usersRepository.create({
+    await consultantsRepository.create({
       email: email,
       name: "Jonh Doe",
       phone: "+55 85 9 99999999",
       cpf: "000.000.000-01",
       password_hash: "123456",
-      role: "ADMIN",
+      pix: "85999999999",
+      typeKeyPix: "TELEFONE",
     });
 
-    await usersRepository.create({
-      id: "user-01",
+    await consultantsRepository.create({
+      id: "consultant-01",
       email: "teste@example.com",
       name: "Jonh Doe",
       phone: "+55 85 9 99999999",
       cpf: "000.000.000-02",
       password_hash: "123456",
+      pix: "85999999999",
+      typeKeyPix: "TELEFONE",
     });
 
     await expect(() => {
       return sut.execute({
-        id: "user-01",
+        id: "consultant-01",
         email: email,
         name: "Jonh Doe",
         phone: "+55 (85) 9 99999999",

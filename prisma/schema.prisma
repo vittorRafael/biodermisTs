@@ -37,9 +37,9 @@ model Consultant {
   status             String   @default("inativo")
   pix                String
   typeKeyPix         TypeKey
-  totalBilled        Decimal
-  availableValue     Decimal
-  lockedValue        Decimal
+  totalBilled        Decimal  @default(0.0)
+  availableValue     Decimal  @default(0.0)
+  lockedValue        Decimal  @default(0.0)
   passwordResetToken String?
   passwordResetTime  String?
   created_at         DateTime @default(now())

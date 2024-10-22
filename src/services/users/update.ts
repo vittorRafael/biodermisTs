@@ -15,7 +15,7 @@ interface UpdateServicesResponse {
   user: User;
 }
 
-export class UpdateUserService {
+export class UpdateUserServices {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute({

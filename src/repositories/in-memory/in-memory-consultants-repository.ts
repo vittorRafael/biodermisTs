@@ -1,26 +1,27 @@
-import { Prisma, Role, User } from "@prisma/client";
-import { UsersRepository } from "../users-repository";
+import { Prisma, Consultant, TypeKey } from "@prisma/client";
 import { randomUUID } from "crypto";
+import { ConsultantsRepository } from "../consultants-repository";
+import { Decimal } from "@prisma/client/runtime/library";
 
-export class InMemoryUsersRepository implements UsersRepository {
-  public items: User[] = [];
+export class InMemoryConsultantsRepository implements ConsultantsRepository {
+  public items: Consultant[] = [];
 
   async findById(id: string) {
-    const user = this.items.find((item) => item.id === id);
-    if (!user) return null;
+    const consultant = this.items.find((item) => item.id === id);
+    if (!consultant) return null;
 
-    return user;
+    return consultant;
   }
 
   async findByEmail(email: string) {
-    const user = this.items.find((item) => item.email === email);
-    if (!user) return null;
+    const consultant = this.items.find((item) => item.email === email);
+    if (!consultant) return null;
 
-    return user;
+    return consultant;
   }
 
-  async create(data: Prisma.UserCreateInput) {
-    const user = {
+  async create(data: Prisma.ConsultantCreateInput) {
+    const consultant = {
       id: data.id || randomUUID(),
       email: data.email,
       name: data.name,
@@ -28,16 +29,21 @@ export class InMemoryUsersRepository implements UsersRepository {
       cpf: data.cpf,
       password_hash: data.password_hash,
       srcPhoto: null,
+      srcCert: null,
       status: "ativo",
+      pix: data.pix,
+      typeKeyPix: data.typeKeyPix as TypeKey,
+      totalBilled: new Decimal(0),
+      availableValue: new Decimal(0),
+      lockedValue: new Decimal(0),
       passwordResetToken: data.passwordResetToken || null,
       passwordResetTime: data.passwordResetTime || null,
-      role: data.role as Role,
       created_at: new Date(),
     };
 
-    this.items.push(user);
+    this.items.push(consultant);
 
-    return user;
+    return consultant;
   }
 
   async searchMany(query: string, page: number) {
@@ -52,10 +58,10 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async findByCpf(cpf: string) {
-    const user = this.items.find((item) => item.cpf === cpf);
-    if (!user) return null;
+    const consultant = this.items.find((item) => item.cpf === cpf);
+    if (!consultant) return null;
 
-    return user;
+    return consultant;
   }
 
   async findByToken(token: string) {
