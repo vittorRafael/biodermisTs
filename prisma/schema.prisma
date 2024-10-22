@@ -86,3 +86,10 @@ model Address {
   @@index([userId, consultantId])
   @@map("addresses")
 }
+
+model Category {
+  id       String @id @default(uuid())
+  category String
+
+  @@map("categories")
+}
