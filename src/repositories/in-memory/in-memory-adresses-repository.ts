@@ -26,18 +26,29 @@ export class InMemoryAdressesRepository implements AddressesRepository {
   }
 
   async searchMany(query: string, page: number) {
-    return this.items
-      .filter(
-        (item) =>
-          item.street.toLowerCase().includes(query.toLowerCase()) ||
-          item.neighborhood.toLowerCase().includes(query.toLowerCase()) ||
-          item.zipCode.toLowerCase().includes(query.toLowerCase()) ||
-          item.city.toLowerCase().includes(query.toLowerCase()) ||
-          item.state.toLowerCase().includes(query.toLowerCase()) ||
-          (item.userId ?? "").toLowerCase().includes(query.toLowerCase()) ||
-          (item.consultantId ?? "").toLowerCase().includes(query.toLowerCase())
-      )
-      .slice((page - 1) * 20, page * 20);
+    const filteredItems = this.items.filter(
+      (item) =>
+        item.street.toLowerCase().includes(query.toLowerCase()) ||
+        item.neighborhood.toLowerCase().includes(query.toLowerCase()) ||
+        item.zipCode.toLowerCase().includes(query.toLowerCase()) ||
+        item.city.toLowerCase().includes(query.toLowerCase()) ||
+        item.state.toLowerCase().includes(query.toLowerCase()) ||
+        (item.userId ?? "")
+          .toString()
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        (item.consultantId ?? "")
+          .toString()
+          .toLowerCase()
+          .includes(query.toLowerCase())
+    );
+
+    const paginatedItems = filteredItems.slice((page - 1) * 20, page * 20);
+
+    return {
+      addresses: paginatedItems,
+      totalItems: this.items.length,
+    };
   }
 
   async save(address: Address) {

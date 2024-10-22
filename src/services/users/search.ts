@@ -8,6 +8,7 @@ interface SearchUsersServicesRequest {
 
 interface SearchUsersServicesResponse {
   users: User[];
+  totalItems: number;
 }
 
 export class SearchUsersServices {
@@ -17,8 +18,11 @@ export class SearchUsersServices {
     query,
     page,
   }: SearchUsersServicesRequest): Promise<SearchUsersServicesResponse> {
-    const users = await this.usersRepository.searchMany(query, page);
+    const { totalItems, users } = await this.usersRepository.searchMany(
+      query,
+      page
+    );
 
-    return { users };
+    return { users, totalItems };
   }
 }

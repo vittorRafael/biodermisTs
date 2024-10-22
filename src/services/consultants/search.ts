@@ -8,6 +8,7 @@ interface SearchConsultantsServicesRequest {
 
 interface SearchConsultantsServicesResponse {
   consultants: Consultant[];
+  totalItems: number;
 }
 
 export class SearchConsultantsServices {
@@ -17,11 +18,9 @@ export class SearchConsultantsServices {
     query,
     page,
   }: SearchConsultantsServicesRequest): Promise<SearchConsultantsServicesResponse> {
-    const consultants = await this.consultantsRepository.searchMany(
-      query,
-      page
-    );
+    const { consultants, totalItems } =
+      await this.consultantsRepository.searchMany(query, page);
 
-    return { consultants };
+    return { consultants, totalItems };
   }
 }

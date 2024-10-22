@@ -41,14 +41,19 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async searchMany(query: string, page: number) {
-    return this.items
-      .filter(
-        (item) =>
-          item.name.toLowerCase().includes(query.toLowerCase()) ||
-          item.email.toLowerCase().includes(query.toLowerCase()) ||
-          item.cpf.includes(query) // CPF geralmente não é case-sensitive, então não precisa de 'toLowerCase'
-      )
-      .slice((page - 1) * 20, page * 20);
+    const filteredItems = this.items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(query.toLowerCase()) ||
+        item.email.toLowerCase().includes(query.toLowerCase()) ||
+        item.cpf.includes(query) // CPF não precisa ser case-sensitive
+    );
+
+    const paginatedItems = filteredItems.slice((page - 1) * 20, page * 20);
+
+    return {
+      users: paginatedItems,
+      totalItems: this.items.length,
+    };
   }
 
   async findByCpf(cpf: string) {

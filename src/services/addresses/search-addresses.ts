@@ -8,6 +8,7 @@ interface SearchAdressesServicesRequest {
 
 interface SearchAdressesServicesResponse {
   addresses: Address[];
+  totalItems: number;
 }
 
 export class SearchAdressesServices {
@@ -17,8 +18,11 @@ export class SearchAdressesServices {
     query,
     page,
   }: SearchAdressesServicesRequest): Promise<SearchAdressesServicesResponse> {
-    const addresses = await this.addressRepository.searchMany(query, page);
+    const { addresses, totalItems } = await this.addressRepository.searchMany(
+      query,
+      page
+    );
 
-    return { addresses };
+    return { addresses, totalItems };
   }
 }
