@@ -12,7 +12,7 @@ interface UpdateServicesRequest {
 }
 
 interface UpdateServicesResponse {
-  user: User;
+  userUpdated: User;
 }
 
 export class UpdateUserServices {
@@ -41,6 +41,8 @@ export class UpdateUserServices {
     user.phone = phone || user.phone;
     user.cpf = cpf || user.cpf;
 
-    return { user };
+    const userUpdated = await this.usersRepository.save(user);
+
+    return { userUpdated };
   }
 }

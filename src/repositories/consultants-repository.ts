@@ -7,4 +7,5 @@ export interface ConsultantsRepository {
   searchMany(query: string, page: number): Promise<Consultant[]>;
   findByCpf(cpf: string): Promise<Consultant | null>;
   findByToken(token: string): Promise<Consultant | null>;
+  save(consultant: Consultant): Promise<Consultant>;
 }

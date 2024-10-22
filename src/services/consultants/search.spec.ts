@@ -67,4 +67,24 @@ describe("Search Consultants Use Case", () => {
       expect.objectContaining({ name: "Jonh Doe 22" }),
     ]);
   });
+  it("should be able to fetch all consultants", async () => {
+    for (let i = 1; i <= 22; i++) {
+      await consultantsRepository.create({
+        email: `jonhdoe${i}@example.com`,
+        name: `Jonh Doe ${i}`,
+        phone: "+55 85 9 99999999",
+        cpf: `000.000.000-${i < 10 ? "0" + i : i}`,
+        password_hash: "123456",
+        pix: "85999999999",
+        typeKeyPix: "TELEFONE",
+      });
+    }
+
+    const { consultants } = await sut.execute({
+      query: "",
+      page: 1,
+    });
+
+    expect(consultants).toHaveLength(20);
+  });
 });

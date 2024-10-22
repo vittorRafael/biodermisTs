@@ -70,4 +70,13 @@ export class InMemoryConsultantsRepository implements ConsultantsRepository {
 
     return user;
   }
+
+  async save(consultant: Consultant) {
+    const consultantIndex = this.items.findIndex(
+      (item) => item.id === consultant.id
+    );
+    if (consultantIndex >= 0) this.items[consultantIndex] = consultant;
+
+    return consultant;
+  }
 }

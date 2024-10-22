@@ -27,15 +27,17 @@ describe("Update Password Service", () => {
       role: "ADMIN",
     });
 
-    const { user } = await sut.execute({
+    const { userUpdated } = await sut.execute({
       token: "test1",
       password: "new-password",
     });
 
-    expect(user).toEqual(
+    expect(userUpdated).toEqual(
       expect.objectContaining({ email: "jonhdoe@example.com" })
     );
-    expect(user.password_hash).toEqual(expect.any(String));
-    expect(user).toEqual(expect.objectContaining({ passwordResetToken: null }));
+    expect(userUpdated.password_hash).toEqual(expect.any(String));
+    expect(userUpdated).toEqual(
+      expect.objectContaining({ passwordResetToken: null })
+    );
   });
 });

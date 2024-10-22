@@ -10,7 +10,7 @@ interface UpdatePasswordServicesRequest {
 }
 
 interface UpdatePasswordServicesResponse {
-  user: User;
+  userUpdated: User;
 }
 
 export class UpdatePasswordServices {
@@ -32,9 +32,10 @@ export class UpdatePasswordServices {
 
     user.passwordResetToken = null;
     user.passwordResetTime = null;
-    user.password_hash =
-      (await bcryptjs.hash(password, 6)) || user.password_hash;
+    user.password_hash = await bcryptjs.hash(password, 6);
 
-    return { user };
+    const userUpdated = await this.usersRepository.save(user);
+
+    return { userUpdated };
   }
 }

@@ -28,16 +28,16 @@ describe("Update Password Consultant Service", () => {
       typeKeyPix: "TELEFONE",
     });
 
-    const { consultant } = await sut.execute({
+    const { consultantUpdated } = await sut.execute({
       token: "test1",
       password: "new-password",
     });
 
-    expect(consultant).toEqual(
+    expect(consultantUpdated).toEqual(
       expect.objectContaining({ email: "jonhdoe@example.com" })
     );
-    expect(consultant.password_hash).toEqual(expect.any(String));
-    expect(consultant).toEqual(
+    expect(consultantUpdated.password_hash).toEqual(expect.any(String));
+    expect(consultantUpdated).toEqual(
       expect.objectContaining({ passwordResetToken: null })
     );
   });

@@ -7,4 +7,5 @@ export interface UsersRepository {
   searchMany(query: string, page: number): Promise<User[]>;
   findByCpf(cpf: string): Promise<User | null>;
   findByToken(token: string): Promise<User | null>;
+  save(user: User): Promise<User>;
 }

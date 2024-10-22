@@ -10,7 +10,7 @@ interface UpdatePasswordConsultantServicesRequest {
 }
 
 interface UpdatePasswordConsultantServicesResponse {
-  consultant: Consultant;
+  consultantUpdated: Consultant;
 }
 
 export class UpdatePasswordConsultantServices {
@@ -35,6 +35,8 @@ export class UpdatePasswordConsultantServices {
     consultant.password_hash =
       (await bcryptjs.hash(password, 6)) || consultant.password_hash;
 
-    return { consultant };
+    const consultantUpdated = await this.consultantsRepository.save(consultant);
+
+    return { consultantUpdated };
   }
 }

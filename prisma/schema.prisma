@@ -44,6 +44,8 @@ model Consultant {
   passwordResetTime  String?
   created_at         DateTime @default(now())
 
+  addresses Address[]
+
   @@map("consultants")
 }
 
@@ -61,5 +63,26 @@ model User {
   role               Role     @default(CLIENTE)
   created_at         DateTime @default(now())
 
+  addresses Address[]
+
   @@map("users")
+}
+
+model Address {
+  id           String      @id @default(uuid())
+  street       String
+  neighborhood String
+  complement   String?
+  number       String
+  zipCode      String
+  city         String
+  state        String
+  userId       String?     @unique
+  consultantId String?     @unique
+  user         User?       @relation(fields: [userId], references: [id])
+  consultant   Consultant? @relation(fields: [consultantId], references: [id])
+  created_at   DateTime    @default(now())
+
+  @@index([userId, consultantId])
+  @@map("addresses")
 }

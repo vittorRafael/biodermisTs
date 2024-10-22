@@ -24,7 +24,7 @@ describe("Update consultant Service", () => {
       typeKeyPix: "TELEFONE",
     });
 
-    const { consultant } = await sut.execute({
+    const { consultantUpdated } = await sut.execute({
       id: "consultant-01",
       email: "jonhdoe444@example.com",
       name: "Jonh Doe",
@@ -32,7 +32,7 @@ describe("Update consultant Service", () => {
       cpf: "000.000.000-01",
     });
 
-    expect(consultant).toEqual(
+    expect(consultantUpdated).toEqual(
       expect.objectContaining({ email: "jonhdoe444@example.com" })
     );
   });

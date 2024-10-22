@@ -23,7 +23,7 @@ describe("Update User Service", () => {
       role: "ADMIN",
     });
 
-    const { user } = await sut.execute({
+    const { userUpdated } = await sut.execute({
       id: "user-01",
       email: "jonhdoe444@example.com",
       name: "Jonh Doe",
@@ -31,7 +31,7 @@ describe("Update User Service", () => {
       cpf: "000.000.000-01",
     });
 
-    expect(user).toEqual(
+    expect(userUpdated).toEqual(
       expect.objectContaining({ email: "jonhdoe444@example.com" })
     );
   });

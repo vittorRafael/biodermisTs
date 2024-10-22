@@ -12,7 +12,7 @@ interface UpdateConsultantServicesRequest {
 }
 
 interface UpdateConsultantServicesResponse {
-  consultant: Consultant;
+  consultantUpdated: Consultant;
 }
 
 export class UpdateConsultantServices {
@@ -44,6 +44,8 @@ export class UpdateConsultantServices {
     consultant.phone = phone || consultant.phone;
     consultant.cpf = cpf || consultant.cpf;
 
-    return { consultant };
+    const consultantUpdated = await this.consultantsRepository.save(consultant);
+
+    return { consultantUpdated };
   }
 }
